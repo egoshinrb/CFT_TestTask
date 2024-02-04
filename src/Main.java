@@ -1,0 +1,18 @@
+package src;
+
+// -s -a -p sample- in1.txt in2.txt
+// -s -f -p 111 -p 222 -o 1234 in1.txt in2.txt in3.txt in4.txt
+// -s -f -p 111 -p 222 -o 1234\ -o 5678\ in1.txt in2.txt in3.txt in4.txt
+// -a -s -f -p 111 -p 222 -o 1234\ -o 5678\ in1.txt
+public class Main {
+    public static void main(String[] args) {
+        try {
+            ArgumentsParser argumentsParser = ArgumentsParser.getInstance(args);
+            System.out.println(argumentsParser.getFlags());
+            System.out.println(argumentsParser.getOutputFileNames());
+            System.out.println(argumentsParser.getInputFileNames());
+        } catch (MyIllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+}
