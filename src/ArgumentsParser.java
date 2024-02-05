@@ -12,9 +12,6 @@ package src;
 import java.util.ArrayList;
 
 public class ArgumentsParser {
-    private final static String INTEGERS_FILE_NAME = "integers.txt";
-    private final static String FLOATS_FILE_NAME = "floats.txt";
-    private final static String STRINGS_FILE_NAME = "strings.txt";
     private final static String FLAG_OUTPUT = "-o";
     private final static String FLAG_PREFIX = "-p";
     private final static String FLAG_APPEND = "-a";
@@ -49,7 +46,7 @@ public class ArgumentsParser {
         return inputFileNames;
     }
 
-    public String getOutputFileNames() {
+    public String getOutputFilesPathWithPrefix() {
         return outputFilesPathWithPrefix;
     }
 
