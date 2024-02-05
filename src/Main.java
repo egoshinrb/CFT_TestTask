@@ -25,7 +25,6 @@ public class Main {
 
 //            FileWriter fileWriter;
 //            FileReader fileReader;
-            String tempStr;
             byte params = argumentsParser.getFlags();
             String filesPathWithPrefix = argumentsParser.getOutputFilesPathWithPrefix();
             FileWriter integersFileWriter = null;
