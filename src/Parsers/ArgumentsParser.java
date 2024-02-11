@@ -1,4 +1,4 @@
-package src;
+package src.Parsers;
 
 
 // integers.txt, floats.txt, strings.txt
@@ -8,6 +8,8 @@ package src;
 // -s = краткая статистика - количество записанных элементов
 // -f = полная статистика - для чисел дополнительно содержит минимальное и максимальное значения, сумма и среднее.
 //                          для строк содержит также размер самой короткой строки и самой длинной.
+
+import src.MyIllegalArgumentException;
 
 import java.util.ArrayList;
 
