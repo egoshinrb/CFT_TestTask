@@ -17,7 +17,7 @@ public class FloatsFullStatistics implements Statistics {
         if (count == 1) {
             average = min = max = sum = temp;
         } else {
-            min = min > temp ? temp : min;
+            min = min > temp ? temp : min; // TODO считаем неверные значения минимума и максимума
             max = max < temp ? temp : max;
             sum += temp;
             average = sum / count;
@@ -26,11 +26,10 @@ public class FloatsFullStatistics implements Statistics {
     @Override
     public void show() {
         if (count > 0) {
-            System.out.println("Количество вещественных чисел равно " + count +
-                    ", максимальное вещественное число равно " + max +
-                    ", минимальное вещественное число равно " + min +
-                    ", сумма вещественных чисел равно " + sum +
-                    ", среднее значение равно " + average);
+            System.out.printf("Количество вещественных чисел равно %d, максимальное вещественное число равно %f, минимальное вещественное число равно %f, " +
+                    "сумма вещественных чисел равна %f, среднее значение равно %f%n", count, max, min, sum, average);
+        } else {
+            System.out.println("Вещественные числа отсутствуют");
         }
     }
 }

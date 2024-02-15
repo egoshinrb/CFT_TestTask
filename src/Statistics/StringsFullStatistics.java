@@ -32,6 +32,8 @@ public class StringsFullStatistics implements Statistics {
     public void show() {
         if (count > 0) {
             System.out.println("Количество строк равно " + count + ", максимальная длина строки равна " + max + ", минимальная длина строки равна " + min);
+        } else {
+            System.out.println("Строки отсутствуют");
         }
     }
 }

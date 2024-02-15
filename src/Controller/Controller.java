@@ -1,14 +1,11 @@
 package src.Controller;
 
-import src.MyIllegalArgumentException;
+import src.Exception.MyIllegalArgumentException;
 import src.Parsers.ArgumentsParser;
 import src.Parsers.NumbersParser;
 import src.Statistics.*;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -28,6 +25,7 @@ public class Controller {
     private static Statistics integersStatistics;
     private static Statistics floatsStatistics;
     private static Statistics stringsStatistics;
+    private static boolean isShowStatistics;
 
     private static byte params;
 
@@ -35,17 +33,15 @@ public class Controller {
     }
 
     public static void process(String[] args) {
+        System.out.println("Обработка началась");
         try {
             ArgumentsParser argumentsParser = ArgumentsParser.getInstance(args);
-            System.out.println(argumentsParser.getFlags()); // TODO убрать!!!
-            System.out.println(argumentsParser.getOutputFilesPathWithPrefix()); // TODO убрать!!!
-            System.out.println(argumentsParser.getInputFileNames() + "\n" + "=====================" + "\n"); // TODO убрать!!!
-
             params = argumentsParser.getFlags();
-            initStatistics();
-
             String filesPathWithPrefix = argumentsParser.getOutputFilesPathWithPrefix();
             ArrayList<String> inputFileNames = argumentsParser.getInputFileNames();
+
+//            boolean isShowStatistics = false;
+            initStatistics();
 
             NumbersParser numbersParser = new NumbersParser();
             StringBuilder integersStringBuilder = new StringBuilder();
@@ -57,6 +53,7 @@ public class Controller {
             int stringsCacheSize = CACHE_SIZE;
 
             int i = inputFileNames.size();
+
             for (String fileReaderName : inputFileNames) {
                 try (Scanner scanner = new Scanner(new FileReader(fileReaderName)).useDelimiter("\n")) {
                     while (scanner.hasNext()) {
@@ -84,22 +81,24 @@ public class Controller {
                             --stringsCacheSize;
                         }
 
-
-                        if (integersCacheSize == 0 || (i == 1 && !scanner.hasNext())) {
+                        if (integersCacheSize == 0 || (i == 1 && !scanner.hasNext() && integersCacheSize != CACHE_SIZE)) {
+                            isShowStatistics = true;
+                            integersFileWriter = writeFile(integersFileWriter, filesPathWithPrefix + INTEGERS_FILE_NAME, integersStringBuilder);
                             integersCacheSize = CACHE_SIZE;
-                            writeFile(integersFileWriter,filesPathWithPrefix + INTEGERS_FILE_NAME, integersStringBuilder);
                             integersStringBuilder.delete(0, integersStringBuilder.length());
                         }
 
-                        if (floatsCacheSize == 0 || (i == 1 && !scanner.hasNext())) {
+                        if (floatsCacheSize == 0 || (i == 1 && !scanner.hasNext() && floatsCacheSize != CACHE_SIZE)) {
+                            isShowStatistics = true;
+                            floatsFileWriter = writeFile(floatsFileWriter, filesPathWithPrefix + FLOATS_FILE_NAME, floatsStringBuilder);
                             floatsCacheSize = CACHE_SIZE;
-                            writeFile(floatsFileWriter,filesPathWithPrefix + FLOATS_FILE_NAME, floatsStringBuilder);
                             floatsStringBuilder.delete(0, floatsStringBuilder.length());
                         }
 
-                        if (stringsCacheSize == 0 || (i == 1 && !scanner.hasNext())) {
+                        if (stringsCacheSize == 0 || (i == 1 && !scanner.hasNext() && stringsCacheSize != CACHE_SIZE)) {
+                            isShowStatistics = true;
+                            stringsFileWriter = writeFile(stringsFileWriter,filesPathWithPrefix + STRINGS_FILE_NAME, stringsStringBuilder);
                             stringsCacheSize = CACHE_SIZE;
-                            writeFile(stringsFileWriter,filesPathWithPrefix + STRINGS_FILE_NAME, stringsStringBuilder);
                             stringsStringBuilder.delete(0, stringsStringBuilder.length());
                         }
                     }
@@ -111,11 +110,14 @@ public class Controller {
                 }
             }
 
-            showStatistics();
+            if (isShowStatistics) {
+                showStatistics();
+            }
         } catch (MyIllegalArgumentException e) {
             System.out.println(e.getMessage());
         } finally {
             closeWriterFiles();
+            System.out.println("Обработка завершена");
         }
     }
 
@@ -139,15 +141,18 @@ public class Controller {
         }
     }
 
-    private static void writeFile(FileWriter fileWriter, String fileName, StringBuilder stringBuilder) {
-            try {
-                if (fileWriter == null) {
-                    fileWriter = new FileWriter(fileName, (params & FLAG_APPEND_MASK) > 0);
-                }
-                fileWriter.write(stringBuilder.toString());
-            } catch (IOException e) {
-                System.out.println("Не удалось создать/открыть/записать в файл " + fileName);
+    private static FileWriter writeFile(FileWriter fileWriter, String fileName, StringBuilder stringBuilder) {
+        try {
+            if (fileWriter == null) {
+                fileWriter = new FileWriter(fileName, (params & FLAG_APPEND_MASK) > 0);
+                System.out.println("Создан файл " + fileName);
             }
+            fileWriter.write(stringBuilder.toString());
+        } catch (IOException e) {
+            isShowStatistics = false;
+        }
+
+        return fileWriter;
     }
 
     private static void closeWriterFiles() {

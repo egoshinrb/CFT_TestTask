@@ -9,7 +9,7 @@ package src.Parsers;
 // -f = полная статистика - для чисел дополнительно содержит минимальное и максимальное значения, сумма и среднее.
 //                          для строк содержит также размер самой короткой строки и самой длинной.
 
-import src.MyIllegalArgumentException;
+import src.Exception.MyIllegalArgumentException;
 
 import java.util.ArrayList;
 
