@@ -1,16 +1,6 @@
 package src.Parsers;
 
-
-// integers.txt, floats.txt, strings.txt
-// -o = путь для результатов
-// -p = префикс имен выходных файлов
-// -a = режим добавления в существующие файлы
-// -s = краткая статистика - количество записанных элементов
-// -f = полная статистика - для чисел дополнительно содержит минимальное и максимальное значения, сумма и среднее.
-//                          для строк содержит также размер самой короткой строки и самой длинной.
-
 import src.Exception.MyIllegalArgumentException;
-
 import java.util.ArrayList;
 
 public class ArgumentsParser {
@@ -19,13 +9,10 @@ public class ArgumentsParser {
     private final static String FLAG_APPEND = "-a";
     private final static String FLAG_SHORT = "-s";
     private final static String FLAG_FULL = "-f";
-
     private static ArgumentsParser instance;
-
     private static ArrayList<String> inputFileNames;
     private static String outputFilesPathWithPrefix;
-
-    private static byte flags; // 0 бит - a, 1 - s, 2 - f
+    private static byte flags; // 0 бит - a, 1 бит - s, 2 бит - f
 
     private ArgumentsParser(String[] args) throws MyIllegalArgumentException {
         if (args.length == 0) {
