@@ -29,7 +29,7 @@ public class ArgumentsParser {
 
     private ArgumentsParser(String[] args) throws MyIllegalArgumentException {
         if (args.length == 0) {
-            throw new MyIllegalArgumentException("Не заданы параметры командной строки, дальнейшая обработка невозможна.");
+            throw new MyIllegalArgumentException("Command line parameters are not set, processing is not possible");
         } else {
             outputFilesPathWithPrefix = "";
             ArgumentsParser.init(args);
@@ -56,19 +56,21 @@ public class ArgumentsParser {
         return flags;
     }
 
+
     private static void init(String[] args) {
         String prefix = "";
         for (int i = 0; i < args.length; ++i) {
             if (args[i].equalsIgnoreCase(FLAG_OUTPUT)) {
                 if (i + 1 < args.length && !ArgumentsParser.isFlag(args[i + 1])) {
                     outputFilesPathWithPrefix = args[i + 1];
-                    if ((outputFilesPathWithPrefix.contains("\\") && !outputFilesPathWithPrefix.endsWith("\\"))) {
-                        outputFilesPathWithPrefix += "\\";
-                    } else if (outputFilesPathWithPrefix.contains("/") && !outputFilesPathWithPrefix.endsWith("/")) {
+                    if (!outputFilesPathWithPrefix.endsWith("/")) {
                         outputFilesPathWithPrefix += "/";
-                    } else if (!outputFilesPathWithPrefix.endsWith("\\")) {
-                        outputFilesPathWithPrefix += "\\";
                     }
+
+                    if (!outputFilesPathWithPrefix.startsWith(".")) {
+                        outputFilesPathWithPrefix = "." + outputFilesPathWithPrefix;
+                    }
+
                     ++i;
                 }
             } else if (args[i].equalsIgnoreCase(FLAG_PREFIX)) {

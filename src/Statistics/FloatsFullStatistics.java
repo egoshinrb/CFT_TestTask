@@ -9,27 +9,26 @@ public class FloatsFullStatistics implements Statistics {
 
     public FloatsFullStatistics() {
     }
-
     @Override
-    public void add (Object number) {
+    public void add(Object number) {
         ++count;
-        Double temp = (Double) number;
+        Double num = (Double) number;
         if (count == 1) {
-            average = min = max = sum = temp;
+            average = min = max = sum = num;
         } else {
-            min = min > temp ? temp : min; // TODO считаем неверные значения минимума и максимума
-            max = max < temp ? temp : max;
-            sum += temp;
+            min = min > num ? num : min;
+            max = max < num ? num : max;
+            sum += num;
             average = sum / count;
         }
     }
     @Override
     public void show() {
         if (count > 0) {
-            System.out.printf("Количество вещественных чисел равно %d, максимальное вещественное число равно %f, минимальное вещественное число равно %f, " +
-                    "сумма вещественных чисел равна %f, среднее значение равно %f%n", count, max, min, sum, average);
+            System.out.printf("The number of float numbers read is equal to %d, the maximum float number is equal %.4f, the minimum float number is equal %.4f, " +
+                    "the total of float numbers is equals %.4f, the average value of float numbers is equals %.4f%n", count, max, min, sum, average);
         } else {
-            System.out.println("Вещественные числа отсутствуют");
+            System.out.println("There are no float numbers");
         }
     }
 }

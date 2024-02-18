@@ -26,10 +26,10 @@ public class IntegersFullStatistics implements Statistics {
     @Override
     public void show() {
         if (count > 0) {
-            System.out.printf("Количество целых чисел равно %d, максимальное целое число равно %d, минимальное целое число равно %d" +
-                    ", сумма целых чисел равна %d, среднее значение равно %.2f%n", count, max, min, sum, average);
+            System.out.printf("The number of integers read is equal to %d, the maximum integers is equal %d, the minimum integers is equal %d" +
+                    ", the total of integers is equals %d, the average value of integers is equals %.2f%n", count, max, min, sum, average);
         } else {
-            System.out.println("Целые числа отсутствуют");
+            System.out.println("There are no integers");
         }
     }
 }
